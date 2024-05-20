@@ -1,7 +1,0 @@
-1. process raw images to have size (336,336).
-2. annotate images.
-    - removed stop line 8 & 9; original stop line 10 is now stop line 8
-3. generate binary maskings for evaluation purpose.
-4. zero-shot annotation.
-5. vision-grounding without context annotation.
-6. vision-grounding with context annotation.
