@@ -1,0 +1,5 @@
+transformers
+matplotlib
+accelerate
+bitsandbytes
+git+https://github.com/facebookresearch/segment-anything.git

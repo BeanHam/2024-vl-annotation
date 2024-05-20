@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <job>
+      <id>873847</id>
+      <size>10</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <bugtracker></bugtracker>
+      <created>2024-05-20 03:49:11.189688+00:00</created>
+      <updated>2024-05-20 03:52:21.476176+00:00</updated>
+      <subset>default</subset>
+      <start_frame>0</start_frame>
+      <stop_frame>9</stop_frame>
+      <frame_filter></frame_filter>
+      <segments>
+        <segment>
+          <id>875567</id>
+          <start>0</start>
+          <stop>9</stop>
+          <url>https://app.cvat.ai/api/jobs/873847</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>beanham</username>
+        <email>binhan96816@gmail.com</email>
+      </owner>
+      <assignee></assignee>
+      <labels>
+        <label>
+          <name>box</name>
+          <color>#208080</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+      </labels>
+    </job>
+    <dumped>2024-05-20 03:52:29.838217+00:00</dumped>
+  </meta>
+  <image id="0" name="stop_line_1.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="114.00" ytl="26.17" xbr="161.54" ybr="37.45" z_order="0">
+    </box>
+    <box label="box" source="manual" occluded="0" xtl="173.62" ytl="283.21" xbr="214.72" ybr="294.08" z_order="0">
+    </box>
+  </image>
+  <image id="1" name="stop_line_10.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="23.35" ytl="163.55" xbr="36.24" ybr="241.71" z_order="0">
+    </box>
+  </image>
+  <image id="2" name="stop_line_2.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="188.13" ytl="293.28" xbr="231.64" ybr="304.96" z_order="0">
+    </box>
+  </image>
+  <image id="3" name="stop_line_3.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="146.64" ytl="159.84" xbr="197.91" ybr="175.01" rotation="327.30" z_order="0">
+    </box>
+  </image>
+  <image id="4" name="stop_line_4.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="161.13" ytl="40.27" xbr="206.66" ybr="51.15" z_order="0">
+    </box>
+    <box label="box" source="manual" occluded="0" xtl="159.12" ytl="260.64" xbr="211.49" ybr="273.54" z_order="0">
+    </box>
+  </image>
+  <image id="5" name="stop_line_5.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="20.13" ytl="165.16" xbr="35.03" ybr="240.90" z_order="0">
+    </box>
+    <box label="box" source="manual" occluded="0" xtl="304.15" ytl="93.05" xbr="319.46" ybr="164.36" z_order="0">
+    </box>
+  </image>
+  <image id="6" name="stop_line_6.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="6.44" ytl="151.22" xbr="72.80" ybr="167.56" rotation="307.10" z_order="0">
+    </box>
+    <box label="box" source="manual" occluded="0" xtl="270.18" ytl="44.20" xbr="285.62" ybr="159.40" rotation="309.70" z_order="0">
+    </box>
+  </image>
+  <image id="7" name="stop_line_7.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="70.49" ytl="177.25" xbr="87.00" ybr="280.39" z_order="0">
+    </box>
+  </image>
+  <image id="8" name="stop_line_8.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="150.26" ytl="136.96" xbr="203.84" ybr="171.61" z_order="0">
+    </box>
+  </image>
+  <image id="9" name="stop_line_9.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="151.87" ytl="31.41" xbr="208.67" ybr="110.77" z_order="0">
+    </box>
+  </image>
+</annotations>

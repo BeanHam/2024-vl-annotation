@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <job>
+      <id>873875</id>
+      <size>10</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <bugtracker></bugtracker>
+      <created>2024-05-20 03:52:54.889340+00:00</created>
+      <updated>2024-05-20 03:54:21.977950+00:00</updated>
+      <subset>default</subset>
+      <start_frame>0</start_frame>
+      <stop_frame>9</stop_frame>
+      <frame_filter></frame_filter>
+      <segments>
+        <segment>
+          <id>875595</id>
+          <start>0</start>
+          <stop>9</stop>
+          <url>https://app.cvat.ai/api/jobs/873875</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>beanham</username>
+        <email>binhan96816@gmail.com</email>
+      </owner>
+      <assignee></assignee>
+      <labels>
+        <label>
+          <name>box</name>
+          <color>#208080</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+      </labels>
+    </job>
+    <dumped>2024-05-20 03:54:29.429668+00:00</dumped>
+  </meta>
+  <image id="0" name="raised_table_1.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="120.04" ytl="105.54" xbr="178.86" ybr="198.60" z_order="0">
+    </box>
+  </image>
+  <image id="1" name="raised_table_10.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="107.19" ytl="113.61" xbr="217.83" ybr="188.35" rotation="43.10" z_order="0">
+    </box>
+  </image>
+  <image id="2" name="raised_table_2.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="141.80" ytl="111.58" xbr="205.45" ybr="205.85" z_order="0">
+    </box>
+  </image>
+  <image id="3" name="raised_table_3.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="172.01" ytl="109.57" xbr="237.68" ybr="219.15" z_order="0">
+    </box>
+  </image>
+  <image id="4" name="raised_table_4.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="149.00" ytl="134.54" xbr="234.46" ybr="242.11" z_order="0">
+    </box>
+  </image>
+  <image id="5" name="raised_table_5.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="106.74" ytl="124.07" xbr="191.35" ybr="180.07" z_order="0">
+    </box>
+  </image>
+  <image id="6" name="raised_table_6.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="130.92" ytl="80.15" xbr="210.28" ybr="236.07" z_order="0">
+    </box>
+  </image>
+  <image id="7" name="raised_table_7.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="123.67" ytl="92.64" xbr="200.62" ybr="221.16" z_order="0">
+    </box>
+  </image>
+  <image id="8" name="raised_table_8.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="118.43" ytl="68.07" xbr="205.90" ybr="217.54" z_order="0">
+    </box>
+  </image>
+  <image id="9" name="raised_table_9.png" width="336" height="336">
+    <box label="box" source="manual" occluded="0" xtl="124.07" ytl="89.02" xbr="203.44" ybr="224.79" z_order="0">
+    </box>
+  </image>
+</annotations>
