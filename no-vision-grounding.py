@@ -64,12 +64,12 @@ def post_processing(response, output_path, save_name):
     np.save(output_path+save_name+'_bbox.npy', bbox)
     return bbox
 
-def visualize_bbox(img, bbox, output_path, image_name):
+def visualize_bbox(img, bbox, output_path, save_name):
     """
     Visualize bbox.
     """
     
-    save_dir = output_path+image_name+'_bbox.png'
+    save_dir = output_path+save_name+'_bbox.png'
     xtl, ytl, xbr, ybr = bbox
     plt.imshow(img)
     plt.hlines(ytl, xmin=xtl, xmax=xbr, color='red')
@@ -147,7 +147,7 @@ def main():
         response = requests.post(api_web, headers=headers, json=completion)
         response = response.json()['choices'][0]['message']['content']
         bbox = post_processing(response,output_path, save_name)
-        visualize_bbox(img, bbox, output_path, image_name)
+        visualize_bbox(img, bbox, output_path, save_name)
         generate_masking(img, bbox, output_path, save_name, image_size)
         
     # --------------------
