@@ -1,6 +1,8 @@
 import os
 import torch
 import string
+import base64
+import requests
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,6 +28,10 @@ def iou_cal(gt, pred):
     Calculate IoU metric.
     """    
     return np.logical_and(gt, pred).sum()/np.logical_or(gt, pred).sum() 
+
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
 
 def write_completion_request(prompt, base64_image):
     """
@@ -63,7 +69,7 @@ def visualize_bbox(img, bbox, output_path, image_name):
     Visualize bbox.
     """
     
-    save_dir = output_path+image_name+'_bbox.npy'
+    save_dir = output_path+image_name+'_bbox.png'
     xtl, ytl, xbr, ybr = bbox
     plt.imshow(img)
     plt.hlines(ytl, xmin=xtl, xmax=xbr, color='red')
@@ -140,7 +146,7 @@ def main():
         completion = write_completion_request(prompt, base64_image)
         response = requests.post(api_web, headers=headers, json=completion)
         response = response.json()['choices'][0]['message']['content']
-        bbox = post_processing(response)               
+        bbox = post_processing(response,output_path, save_name)
         visualize_bbox(img, bbox, output_path, image_name)
         generate_masking(img, bbox, output_path, save_name, image_size)
         
