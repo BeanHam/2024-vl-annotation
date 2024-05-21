@@ -161,6 +161,6 @@ def main():
         pred = np.load(output_path+file)
         iou.append(iou_cal(gt,pred))
     print(f'{obj.upper()}, Zero Shot, IoU: {np.mean(iou)}')
-        
+    np.save('iou_no_vg.npy', np.mean(iou))
 if __name__ == "__main__":
     main()
