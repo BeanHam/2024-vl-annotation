@@ -117,7 +117,7 @@ def main():
     obj = args.object
     api_key = args.api_key
     
-    method='zero-shot'  
+    method='no-vg'  
     image_size = (336,336)
     image_path = f'images/{obj}/'
     image_names = os.listdir(image_path)
