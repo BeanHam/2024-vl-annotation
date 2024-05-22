@@ -63,22 +63,6 @@ def post_processing(response, output_path, save_name):
     np.save(output_path+save_name+'_bbox.npy', bbox)
     return bbox
 
-def visualize_bbox(img, bbox, output_path, save_name):
-    """
-    Visualize bbox.
-    """
-    
-    save_dir = output_path+save_name+'_bbox.png'
-    xtl, ytl, xbr, ybr = bbox
-    plt.imshow(img)
-    plt.hlines(ytl, xmin=xtl, xmax=xbr, color='red')
-    plt.hlines(ybr, xmin=xtl, xmax=xbr, color='red')
-    plt.vlines(xtl, ymin=ytl, ymax=ybr, color='red')
-    plt.vlines(xbr, ymin=ytl, ymax=ybr, color='red')
-    plt.axis('off')
-    plt.savefig(save_dir, dpi=600, bbox_inches='tight', pad_inches=0)
-    plt.close()
-
 def generate_masking(img, bbox, output_path, save_name, image_size):
     
     """
@@ -88,7 +72,7 @@ def generate_masking(img, bbox, output_path, save_name, image_size):
     save_dir = output_path+save_name
     xtl, ytl, xbr, ybr = bbox
     
-    # plot binary masking
+    # generate black masking region
     fig, ax = plt.subplots()
     ax.imshow(img)
     ax.axis('off')
@@ -97,12 +81,24 @@ def generate_masking(img, bbox, output_path, save_name, image_size):
     plt.savefig(save_dir+'_masking.png', dpi=600, bbox_inches='tight', pad_inches=0)
     plt.close()
     
-    # generate binary masking
+    # generate binary masking matrix
     img_masking = np.array(Image.open(save_dir+'_masking.png').convert('RGB').resize(image_size))
     masking = np.zeros(image_size)
     masking[np.where(img_masking.sum(axis=-1)==0.0)]=True
-    np.save(save_dir+'_masking.npy', masking)    
-    os.remove(save_dir+'_masking.png')
+    np.save(save_dir+'_masking.npy', masking)
+    
+    # replot masking region in red
+    plt.figure(figsize=(3.36,3.36))
+    plt.imshow(img)
+    ax = plt.gca()
+    ax.set_autoscale_on(False)    
+    img_mask = np.ones((masking.shape[0], masking.shape[1], 4))
+    img_mask[:,:,3] = 0
+    img_mask[masking==1] = np.concatenate([[1,0,0], [0.5]])
+    ax.imshow(img_mask)
+    plt.axis('off')
+    plt.savefig(save_dir+'_masking.png', bbox_inches='tight', dpi=600, pad_inches=0)
+    plt.close()
     
 def main():        
         
@@ -114,8 +110,7 @@ def main():
     parser.add_argument('--api_key', required=True, help='stop_line or raised_table')
     args = parser.parse_args()
     obj = args.object
-    api_key = args.api_key
-    
+    api_key = args.api_key    
     method='no-vg'  
     image_size = (336,336)
     image_path = f'images/{obj}/'
@@ -146,7 +141,6 @@ def main():
         response = requests.post(api_web, headers=headers, json=completion)
         response = response.json()['choices'][0]['message']['content']
         bbox = post_processing(response,output_path, save_name)
-        visualize_bbox(img, bbox, output_path, save_name)
         generate_masking(img, bbox, output_path, save_name, image_size)
         
     # --------------------
