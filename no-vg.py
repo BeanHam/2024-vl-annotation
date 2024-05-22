@@ -154,6 +154,6 @@ def main():
         pred = np.load(output_path+file)
         iou.append(iou_cal(gt,pred))
     print(f'{obj.upper()}, Zero Shot, IoU: {np.mean(iou)}')
-    np.save(output_path+'IoU_metrix.npy', np.mean(iou))
+    np.save(output_path+'IoU_metrix.npy', iou)
 if __name__ == "__main__":
     main()
