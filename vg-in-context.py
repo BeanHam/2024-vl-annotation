@@ -153,6 +153,7 @@ def main():
     #-------------------------
     # arguments
     #-------------------------
+    print('-- Load Parameters...')      
     parser = argparse.ArgumentParser()
     parser.add_argument('--object', required=True, help='stop_line or raised_table')
     parser.add_argument('--api_key', required=True, help='stop_line or raised_table')
@@ -211,6 +212,7 @@ def main():
             [220,220,220],[211,211,211],[192,192,192],[169,169,169],[128,128,128]
         ])        
     
+    print('-- Load SAM Model...')     
     sam = sam_model_registry[sam_model_type](checkpoint=sam_checkpoint)
     sam.to(device)
     mask_generator = SamAutomaticMaskGenerator(model=sam, points_per_side=32)
@@ -218,6 +220,7 @@ def main():
     # ---------------
     # iterate image
     # --------------- 
+    print('-- Start Annotating...')     
     for image_name in tqdm(image_names):
     
         save_name = image_name.split('.')[0]
@@ -231,10 +234,12 @@ def main():
         response = response.json()['choices'][0]['message']['content']
         masking = post_processing(response, filtered_masks, output_path, save_name)
         final_visualization(img, masking, output_path, save_name)
-        
+    print('-- Annotation Done...') 
+    
     # --------------------
     # evaluation
-    # --------------------        
+    # --------------------     
+    print('-- Start Evaluating...')     
     files = os.listdir(image_path)        
     files = [file for file in files if 'masking.npy' in file]
     iou = []
@@ -242,8 +247,9 @@ def main():
         gt = np.load(image_path+file)
         pred = np.load(output_path+file)
         iou.append(iou_cal(gt,pred))
-    print(f'{obj.upper()}, Zero Shot, IoU: {np.mean(iou)}')
+    print(f'-- {obj.upper()}, Zero Shot, IoU: {np.mean(iou)}')
     np.save(output_path+'IoU_metrix.npy', iou)
+    
 if __name__ == "__main__":
     main()
 

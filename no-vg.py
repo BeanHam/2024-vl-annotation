@@ -105,6 +105,7 @@ def main():
     #-------------------------
     # arguments
     #-------------------------
+    print('-- Load Parameters...')
     parser = argparse.ArgumentParser()
     parser.add_argument('--object', required=True, help='stop_line or raised_table')
     parser.add_argument('--api_key', required=True, help='stop_line or raised_table')
@@ -132,6 +133,7 @@ def main():
     # ---------------
     # iterate image
     # --------------- 
+    print('-- Start Annotating...')    
     for image_name in tqdm(image_names):
     
         save_name = image_name.split('.')[0]
@@ -142,10 +144,12 @@ def main():
         response = response.json()['choices'][0]['message']['content']
         bbox = post_processing(response,output_path, save_name)
         generate_masking(img, bbox, output_path, save_name, image_size)
-        
+    print('-- Annotation Done...')         
+    
     # --------------------
     # evaluation
     # --------------------        
+    print('-- Start Evaluating...')     
     files = os.listdir(image_path)        
     files = [file for file in files if 'masking.npy' in file]
     iou = []
@@ -153,7 +157,8 @@ def main():
         gt = np.load(image_path+file)
         pred = np.load(output_path+file)
         iou.append(iou_cal(gt,pred))
-    print(f'{obj.upper()}, Zero Shot, IoU: {np.mean(iou)}')
+    print(f'-- {obj.upper()}, Zero Shot, IoU: {np.mean(iou)}')
     np.save(output_path+'IoU_metrix.npy', iou)
+    
 if __name__ == "__main__":
     main()
