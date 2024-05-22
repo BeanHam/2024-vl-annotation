@@ -143,7 +143,7 @@ def post_processing(response, masks, output_path, save_name):
     np.save(output_path+save_name+'_bbox.npy', bboxes)
     np.save(output_path+save_name+'_masking.npy', masking)
     
-    return bboxes
+    return masking
 
 def final_visualization(img, masking, output_path,save_name):
     plt.figure(figsize=(3.36,3.36))
@@ -238,7 +238,7 @@ def main():
         response = requests.post(api_web, headers=headers, json=completion)
         response = response.json()['choices'][0]['message']['content']
         masking = post_processing(response, filtered_masks, output_path, save_name)
-        final_visualization(img, bbox, output_path, save_name)
+        final_visualization(img, masking, output_path, save_name)
         
     # --------------------
     # evaluation
