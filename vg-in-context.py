@@ -161,7 +161,7 @@ def main():
     args = parser.parse_args()
     obj = args.object
     api_key = args.api_key
-    add_bbox = args.add_bbox    
+    add_bbox = args.add_bbox=='True'
     method='vg-in-context'
     sam_checkpoint = "sam_vit_h_4b8939.pth"
     sam_model_type = "vit_h"
