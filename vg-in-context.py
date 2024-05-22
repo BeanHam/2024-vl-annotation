@@ -142,7 +142,7 @@ def final_visualization(img, masking, output_path,save_name):
     ax.set_autoscale_on(False)    
     img_mask = np.ones((masking.shape[0], masking.shape[1], 4))
     img_mask[:,:,3] = 0
-    img_mask[masking] = np.concatenate([[1,0,0], [0.5]])
+    img_mask[masking==1] = np.concatenate([[1,0,0], [0.5]])
     ax.imshow(img_mask)
     plt.axis('off')
     plt.savefig(output_path+save_name+'_masking.png', bbox_inches='tight', dpi=600, pad_inches=0)
@@ -169,7 +169,7 @@ def main():
     image_path = f'images/{obj}/'
     image_names = os.listdir(image_path)
     image_names = [name for name in image_names if ((name.endswith('.png') & ('masking' not in name)))]
-    output_path = f'outputs/{method}/{obj}/'
+    output_path = f'outputs/{method}/bbox_{args.add_bbox}/{obj}/'
     api_web = "https://api.openai.com/v1/chat/completions"
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     if not os.path.isdir(output_path):
