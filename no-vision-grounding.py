@@ -9,9 +9,6 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from PIL import Image
 from matplotlib.patches import Rectangle
-import accelerate
-import bitsandbytes
-from transformers import LlavaNextProcessor, LlavaNextForConditionalGeneration
 
 stop_line_prompt = """
 [INST] <image>\n
@@ -19,8 +16,10 @@ A stop line is a white line painted on the road at intersections where traffic m
 It shows drivers where to halt their vehicles. 
 Please identify the bounding box of the stop line in the image in the format of (xtl, ytl, xbr, ybr).[/INST]
 """
-raised_table_prompt = """
-[INST] <image>\nA raised table in the road is usually painted in white color with two arrows. Please identify the bounding box of the raised table in the image. [/INST]
+raised_table_prompt="""
+A raised table usually covers the entire width of the crosswalk. 
+It is typically painted with triangular arrows in white color.
+Please identify the bounding box of the stop line in the image in the format of (xtl, ytl, xbr, ybr).[/INST]
 """
 
 def iou_cal(gt, pred):
