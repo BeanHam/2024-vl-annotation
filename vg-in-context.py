@@ -55,7 +55,7 @@ def mask_filtering(img, masks, obj, colors_to_remove, colors_to_stay):
             
     return filtered_masks
 
-def mask_visualization(image, masks, output_path,save_name, add_bbox):
+def mask_visualization(img, masks, output_path,save_name, add_bbox):
     
     ## base image
     plt.imshow(img)
@@ -227,7 +227,7 @@ def main():
         img = np.array(Image.open(image_path+image_name).convert('RGB').resize((336,336)))
         masks = mask_generator.generate(img)
         filtered_masks = mask_filtering(img, masks, obj, colors_to_remove, colors_to_stay)
-        mask_visualization(img, filtered_masks, output_path, save_name)
+        mask_visualization(img, filtered_masks, output_path, save_name, add_bbox)
         base64_image = encode_image(output_path+save_name+'_candidates.png')
         completion = write_completion_request(prompt, base64_image)
         response = requests.post(api_web, headers=headers, json=completion)
