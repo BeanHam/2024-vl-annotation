@@ -46,7 +46,7 @@ def write_completion_request(prompt, base64_image):
                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
            ]}
       ],
-      "max_tokens": 100
+      "max_tokens": 200
     }
     return completion
 
@@ -160,6 +160,6 @@ def main():
         pred = np.load(output_path+file)
         iou.append(iou_cal(gt,pred))
     print(f'{obj.upper()}, Zero Shot, IoU: {np.mean(iou)}')
-    np.save('iou_no_vg.npy', np.mean(iou))
+    np.save(output_path+'IoU_metrix.npy', np.mean(iou))
 if __name__ == "__main__":
     main()
