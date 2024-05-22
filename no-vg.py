@@ -12,7 +12,7 @@ from matplotlib.patches import Rectangle
 
 stop_line_prompt = """
 [INST] <image>\n
-A stop line is a white line painted on the road at intersections where traffic must stop. 
+A stop line is a single white line painted on the road at intersections where traffic must stop.
 It shows drivers where to halt their vehicles. 
 Please identify the bounding box of the stop line in the image in the format of (xtl, ytl, xbr, ybr).[/INST]
 """

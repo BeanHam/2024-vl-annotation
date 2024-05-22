@@ -18,7 +18,7 @@ from segment_anything import sam_model_registry, SamAutomaticMaskGenerator
 
 stop_line_prompt = """
 [INST] <image>\n
-A stop line is a white line painted on the road at intersections where traffic must stop. 
+A stop line is a single white line painted on the road at intersections where traffic must stop.
 It shows drivers where to halt their vehicles. 
 Which labeled images represent stop line?[/INST]
 """
