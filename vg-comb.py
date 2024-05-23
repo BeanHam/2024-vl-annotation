@@ -137,13 +137,13 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def write_completion_request(prompt, no_context_image, in_context_image):
+def write_completion_request(prompt, no_context_image, in_context_image, gpt_model):
     """
     Compose completion request.
     """
     
     completion = {
-      "model": "gpt-4-turbo-2024-04-09",
+      "model": gpt_model,
       "messages": [
           {"role": "user",
            "content": [
@@ -201,11 +201,16 @@ def main():
     print('-- Load Parameters...')    
     parser = argparse.ArgumentParser()
     parser.add_argument('--object', required=True, help='stop_line or raised_table')
-    parser.add_argument('--api_key', required=True, help='stop_line or raised_table')
+    parser.add_argument('--api_key', required=True, help='open ai key')
+    parser.add_argument('--gpt_model', required=True, help='gpt4 or gpt4v')
     parser.add_argument('--add_bbox', required=True, help='stop_line or raised_table')    
     args = parser.parse_args()
     obj = args.object
     api_key = args.api_key
+    if args.gpt_model == 'gpt4':
+        gpt_model = "gpt-4-turbo-2024-04-09"
+    else:
+        gpt_model = "gpt-4o-2024-05-13"    
     add_bbox = args.add_bbox=='True'    
     method='vg-comb'
     sam_checkpoint = "sam_vit_h_4b8939.pth"
@@ -214,7 +219,7 @@ def main():
     image_path = f'images/{obj}/'
     image_names = os.listdir(image_path)
     image_names = [name for name in image_names if ((name.endswith('.png') & ('masking' not in name)))]
-    output_path = f'outputs/{method}/bbox_{args.add_bbox}/{obj}/'
+    output_path = f'outputs/{gpt_model}/{method}/bbox_{args.add_bbox}/{obj}/'
     api_web = "https://api.openai.com/v1/chat/completions"
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     if not os.path.isdir(output_path):
@@ -276,7 +281,7 @@ def main():
         in_context_mask_visualization(img, filtered_masks, output_path, save_name, add_bbox)
         no_context_image = encode_image(output_path+save_name+'_candidates_no_context.png')
         in_context_image = encode_image(output_path+save_name+'_candidates_in_context.png')
-        completion = write_completion_request(prompt, no_context_image, in_context_image)
+        completion = write_completion_request(prompt, no_context_image, in_context_image, gpt_model)
         response = requests.post(api_web, headers=headers, json=completion)
         response = response.json()['choices'][0]['message']['content']
         masking = post_processing(response, filtered_masks, output_path, save_name)

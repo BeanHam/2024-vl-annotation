@@ -103,13 +103,13 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def write_completion_request(prompt, base64_image):
+def write_completion_request(prompt, base64_image, gpt_model):
     """
     Compose completion request.
     """
     
     completion = {
-      "model": "gpt-4-turbo-2024-04-09",
+      "model": gpt_model,
       "messages": [
           {"role": "user",
            "content": [
@@ -166,10 +166,15 @@ def main():
     print('-- Load Parameters...')    
     parser = argparse.ArgumentParser()
     parser.add_argument('--object', required=True, help='stop_line or raised_table')
-    parser.add_argument('--api_key', required=True, help='stop_line or raised_table')
+    parser.add_argument('--api_key', required=True, help='open ai key')
+    parser.add_argument('--gpt_model', required=True, help='gpt4 or gpt4v')
     args = parser.parse_args()
     obj = args.object
-    api_key = args.api_key    
+    api_key = args.api_key
+    if args.gpt_model == 'gpt4':
+        gpt_model = "gpt-4-turbo-2024-04-09"
+    else:
+        gpt_model = "gpt-4o-2024-05-13"    
     method='vg-no-context'
     sam_checkpoint = "sam_vit_h_4b8939.pth"
     sam_model_type = "vit_h"
@@ -177,7 +182,7 @@ def main():
     image_path = f'images/{obj}/'
     image_names = os.listdir(image_path)
     image_names = [name for name in image_names if ((name.endswith('.png') & ('masking' not in name)))]
-    output_path = f'outputs/{method}/{obj}/'
+    output_path = f'outputs/{gpt_model}/{method}/{obj}/'
     api_web = "https://api.openai.com/v1/chat/completions"
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     if not os.path.isdir(output_path):
@@ -237,7 +242,7 @@ def main():
         filtered_masks = mask_filtering(img, masks, obj, colors_to_remove, colors_to_stay)
         mask_visualization(img, filtered_masks, output_path, save_name)
         base64_image = encode_image(output_path+save_name+'_candidates.png')
-        completion = write_completion_request(prompt, base64_image)
+        completion = write_completion_request(prompt, base64_image, gpt_model)
         response = requests.post(api_web, headers=headers, json=completion)
         response = response.json()['choices'][0]['message']['content']
         masking = post_processing(response, filtered_masks, output_path, save_name)
