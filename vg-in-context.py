@@ -157,7 +157,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--object', required=True, help='stop_line or raised_table')
     parser.add_argument('--api_key', required=True, help='open ai key')
-    parser.add_argument('--gpt_model', required=True, help='gpt4 or gpt4v')
+    parser.add_argument('--gpt_model', required=True, help='gpt4 or gpt4o')
     parser.add_argument('--add_bbox', required=True, help='stop_line or raised_table')    
     args = parser.parse_args()
     obj = args.object
