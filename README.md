@@ -9,18 +9,20 @@ We demonstrate proof-of-concept combining a state-of-the-art vision language mod
 ![alt text](https://github.com/BeanHam/2024-vl-annotation/blob/main/visualizations/pipeline.png)
 ###### Pipeline of our proposed automated annotation process. Users input a pair of (satellite image, annotation guidance). The image will go through a set of processes including segmentation, filtering, and set-of-mark generation. Then the image and guidance will go through a vision-language model, the output of which is post-processed to produce the final annotation results. The procedure requires no fine-tuning, and can be applied on different features with minimal adjust on the guidance.
 
-### Examples
-Experiments on two urban features --- stop lines and raised tables --- show that while direct zero-shot prompting correctly annotates nearly zero images, the pre-segmentation strategies can annotate images with near 40% intersection-over-union accuracy. 
+### Quantitative Evaluation
+Experiments on two urban features --- stop lines and raised tables --- show that while direct zero-shot prompting correctly annotates nearly zero images, the pre-segmentation strategies can annotate images with near 40% IoU (intersection-over-union) accuracy. 
 
 Features | Direct Prompting | SoM - No Context | SoM - In Context | SoM - Combination 
 --- | --- | --- | --- |---
 Stop Lines | 0.0000 | 0.2483 | 0.3354 | 0.3657 
 Raised Tables | 0.0190 | 0.3315 | 0.4069 | 0.4189
 
-Green and yellow outlines indicate perfect and approximate annotations, respectively. A Red outline indicate inaccurate annotations.
+### Qualitative Evaluation
 
-#### Stop Lines
+![#c5f015]Green and ![#f03c15]Green outlines indicate perfect and approximate annotations, respectively. A Red outline indicate inaccurate annotations.
+
+##### Stop Lines
 ![alt text](https://github.com/BeanHam/2024-vl-annotation/blob/main/visualizations/stop_lines.png)
 
-2. Raised Table.
+##### Raised Table.
 ![alt text](https://github.com/BeanHam/2024-vl-annotation/blob/main/visualizations/raised_tables.png)
