@@ -119,10 +119,10 @@ def main():
         gpt_model = "gpt-4o-2024-05-13"
     method='no-vg'
     image_size = (336,336)
-    image_path = f'images/{obj}/'
+    image_path = f'../images/{obj}/'
     image_names = os.listdir(image_path)
     image_names = [name for name in image_names if ((name.endswith('.png') & ('masking' not in name)))]
-    output_path = f'outputs/{gpt_model}/{method}/{obj}/'
+    output_path = f'../outputs/{gpt_model}/{method}/{obj}/'
     api_web = "https://api.openai.com/v1/chat/completions"
     if not os.path.isdir(output_path):
         os.makedirs(output_path)

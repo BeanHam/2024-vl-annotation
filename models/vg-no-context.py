@@ -55,38 +55,48 @@ def mask_filtering(img, masks, obj, colors_to_remove, colors_to_stay):
             
     return filtered_masks
 
-def mask_visualization(img, masks, output_path,save_name, add_bbox):
+def mask_visualization(img, masks, output_path,save_name):
+    """
+    Generate visualization containing segments.
+    """
     
-    ## base image
-    plt.imshow(img)
-    ax = plt.gca()
-    ax.set_autoscale_on(False)
-    img_mask = np.ones((masks[0]['segmentation'].shape[0], masks[0]['segmentation'].shape[1], 4))
-    img_mask[:,:,3] = 0
-    
-    ## visualize
-    counter = 0
-    for i in range(len(masks)):
-        ann = masks[i]
-        m = ann['segmentation']
-        color_mask = np.concatenate([np.random.random(3), [0.5]])
-        img_mask[m] = color_mask
-        bboxes = [ann['bbox']]        
-        for bbox in bboxes:
-            xtl, ytl = int(bbox[0]), int(bbox[1])
-            xbr, ybr = int(xtl+bbox[2]), int(ytl+bbox[3])
-            rect = Rectangle((0.5*(xtl+xbr), 0.5*(ytl+ybr)-7), 8, 8, linewidth=0.1, facecolor='black')
-            ax.text(0.5*(xtl+xbr), 0.5*(ytl+ybr), str(counter), color='white', size=8)
-            ax.add_patch(rect)
-            ax.axis('off')
-            counter += 1
-            if add_bbox:
-                ax.hlines(ytl, xmin=xtl, xmax=xbr, color='red', linewidth=0.5)
-                ax.hlines(ybr, xmin=xtl, xmax=xbr, color='red', linewidth=0.5)
-                ax.vlines(xtl, ymin=ytl, ymax=ybr, color='red', linewidth=0.5)
-                ax.vlines(xbr, ymin=ytl, ymax=ybr, color='red', linewidth=0.5)              
-    ax.imshow(img_mask)   
-    plt.savefig(output_path+save_name+f'_candidates.png', bbox_inches='tight', dpi=600, pad_inches=0)
+    ## visualize potential candidates
+    col = 5
+    row = len(masks)//col+1*(len(masks)%col>0)
+    fig, axs = plt.subplots(row, col, figsize=(col*3, row*3))
+    plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
+    plt.subplots_adjust(wspace=0.3, hspace=0.3)
+    for r in range(row):
+        for c in range(col):
+
+            if row == 1:
+                ## outside of range
+                if r*5+c >=len(masks):
+                    axs[r*5+c].axis('off')
+                    continue
+
+                ## extract bounding box
+                bbox = masks[r*5+c]['bbox']
+                xtl, ytl = int(bbox[0]), int(bbox[1])
+                xbr, ybr = int(xtl+bbox[2]), int(ytl+bbox[3])
+                axs[c].imshow(img[ytl:ybr, xtl:xbr])
+                axs[c].set_title(f'{r*5+c}')
+                axs[c].axis('off')
+
+            else:
+                ## outside of range
+                if r*5+c >=len(masks):
+                    axs[r,c].axis('off')
+                    continue
+
+                ## extract bounding box
+                bbox = masks[r*5+c]['bbox']
+                xtl, ytl = int(bbox[0]), int(bbox[1])
+                xbr, ybr = int(xtl+bbox[2]), int(ytl+bbox[3])
+                axs[r,c].imshow(img[ytl:ybr, xtl:xbr])
+                axs[r,c].set_title(f'{r*5+c}')
+                axs[r,c].axis('off')
+    plt.savefig(output_path+save_name+'_candidates.png', bbox_inches='tight', dpi=600, pad_inches=0)
     plt.close()
 
 def encode_image(image_path):
@@ -146,19 +156,18 @@ def final_visualization(img, masking, output_path,save_name):
     ax.imshow(img_mask)
     plt.axis('off')
     plt.savefig(output_path+save_name+'_masking.png', bbox_inches='tight', dpi=600, pad_inches=0)
-    plt.close()      
+    plt.close()     
     
 def main():        
         
     #-------------------------
     # arguments
     #-------------------------
-    print('-- Load Parameters...')      
+    print('-- Load Parameters...')    
     parser = argparse.ArgumentParser()
     parser.add_argument('--object', required=True, help='stop_line or raised_table')
     parser.add_argument('--api_key', required=True, help='open ai key')
     parser.add_argument('--gpt_model', required=True, help='gpt4 or gpt4o')
-    parser.add_argument('--add_bbox', required=True, help='stop_line or raised_table')    
     args = parser.parse_args()
     obj = args.object
     api_key = args.api_key
@@ -166,15 +175,14 @@ def main():
         gpt_model = "gpt-4-turbo-2024-04-09"
     else:
         gpt_model = "gpt-4o-2024-05-13"    
-    add_bbox = args.add_bbox=='True'
-    method='vg-in-context'
+    method='vg-no-context'
     sam_checkpoint = "sam_vit_h_4b8939.pth"
     sam_model_type = "vit_h"
     image_size = (336,336)
-    image_path = f'images/{obj}/'
+    image_path = f'../images/{obj}/'
     image_names = os.listdir(image_path)
     image_names = [name for name in image_names if ((name.endswith('.png') & ('masking' not in name)))]
-    output_path = f'outputs/{gpt_model}/{method}/bbox_{args.add_bbox}/{obj}/'
+    output_path = f'../outputs/{gpt_model}/{method}/{obj}/'
     api_web = "https://api.openai.com/v1/chat/completions"
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     if not os.path.isdir(output_path):
@@ -217,7 +225,7 @@ def main():
             [220,220,220],[211,211,211],[192,192,192],[169,169,169],[128,128,128]
         ])        
     
-    print('-- Load SAM Model...')     
+    print('-- Load SAM Model...')    
     sam = sam_model_registry[sam_model_type](checkpoint=sam_checkpoint)
     sam.to(device)
     mask_generator = SamAutomaticMaskGenerator(model=sam, points_per_side=32)
@@ -225,14 +233,14 @@ def main():
     # ---------------
     # iterate image
     # --------------- 
-    print('-- Start Annotating...')     
+    print('-- Start Annotating...')      
     for image_name in tqdm(image_names):
     
         save_name = image_name.split('.')[0]
         img = np.array(Image.open(image_path+image_name).convert('RGB').resize((336,336)))
         masks = mask_generator.generate(img)
         filtered_masks = mask_filtering(img, masks, obj, colors_to_remove, colors_to_stay)
-        mask_visualization(img, filtered_masks, output_path, save_name, add_bbox)
+        mask_visualization(img, filtered_masks, output_path, save_name)
         base64_image = encode_image(output_path+save_name+'_candidates.png')
         completion = write_completion_request(prompt, base64_image, gpt_model)
         response = requests.post(api_web, headers=headers, json=completion)
@@ -243,8 +251,8 @@ def main():
     
     # --------------------
     # evaluation
-    # --------------------     
-    print('-- Start Evaluating...')     
+    # --------------------
+    print('-- Start Evaluating...')         
     files = os.listdir(image_path)        
     files = [file for file in files if 'masking.npy' in file]
     iou = []
@@ -257,5 +265,3 @@ def main():
     
 if __name__ == "__main__":
     main()
-
-    
