@@ -12,14 +12,10 @@ We demonstrate proof-of-concept combining a state-of-the-art vision language mod
 ### Examples
 Experiments on two urban features --- stop lines and raised tables --- show that while direct zero-shot prompting correctly annotates nearly zero images, the pre-segmentation strategies can annotate images with near 40% intersection-over-union accuracy. 
 
-Features | Direct Prompting | SoM - No Context  | SoM - In Context | SoM - Combination
---- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
-Seconds | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269
-
-|----------------|--------| ------ | ------ | ------ |
 | Features | Direct Prompting | SoM - No Context | SoM - In Context | SoM - Combination |
-|-- Stop Lines --| 0.0000 | 0.2483 | 0.3354 | 0.3657 |
-|-- Raised Tables --| 0.0190 | 0.3315 | 0.4069 | 0.4189 |
+| ------------- |:-------------:| -----:|
+| Stop Lines | 0.0000 | 0.2483 | 0.3354 | 0.3657 |
+| Raised Tables | 0.0190 | 0.3315 | 0.4069 | 0.4189 |
 
 Green and yellow outlines indicate perfect and approximate annotations, respectively. A Red outline indicate inaccurate annotations.
 
