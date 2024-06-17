@@ -19,7 +19,7 @@ Raised Tables | 0.0190 | 0.3315 | 0.4069 | 0.4189
 
 ### Qualitative Evaluation
 
-![#c5f015]Green and ![#f03c15]Green outlines indicate perfect and approximate annotations, respectively. A Red outline indicate inaccurate annotations.
+```diff - Red``` and ![#f03c15]Green outlines indicate perfect and approximate annotations, respectively. A Red outline indicate inaccurate annotations.
 
 ##### Stop Lines
 ![alt text](https://github.com/BeanHam/2024-vl-annotation/blob/main/visualizations/stop_lines.png)
